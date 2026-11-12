@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage x:Class="ViandriveApp.Views.RegistroConductorPage"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             Title="Registro de Conductor"
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="#0B0C10">
+
+    <ContentPage.Resources>
+        <Style x:Key="RegistroEntryStyle" TargetType="Entry">
+            <Setter Property="FontSize" Value="15" />
+            <Setter Property="TextColor" Value="#FFFFFF" />
+            <Setter Property="FontAttributes" Value="Bold" />
+            <Setter Property="PlaceholderColor" Value="#4A4C5A" />
+            <Setter Property="BackgroundColor" Value="Transparent" />
+            <Setter Property="HeightRequest" Value="48" />
+        </Style>
+
+        <Style x:Key="RegistroSearchStyle" TargetType="SearchBar">
+            <Setter Property="FontSize" Value="15" />
+            <Setter Property="TextColor" Value="#FFFFFF" />
+            <Setter Property="PlaceholderColor" Value="#4A4C5A" />
+            <Setter Property="BackgroundColor" Value="Transparent" />
+            <Setter Property="HeightRequest" Value="48" />
+        </Style>
+    </ContentPage.Resources>
+
+    <Grid RowDefinitions="Auto,*">
+
+        <!-- HEADER FUTURISTA -->
+        <Border Grid.Row="0" 
+                BackgroundColor="#15161C" 
+                StrokeThickness="0" 
+                Padding="24,50,24,30" 
+                StrokeShape="RoundRectangle 0,0,32,32">
+            <Border.Shadow>
+                <Shadow Brush="Black" Offset="0,6" Radius="15" Opacity="0.6" />
+            </Border.Shadow>
+
+            <VerticalStackLayout Spacing="8">
+                <Label Text="VIANDRIVE" FontSize="13" FontAttributes="Bold" TextColor="#F5B800" CharacterSpacing="3" />
+                <Label Text="Únete como conductor" FontSize="26" FontAttributes="Bold" TextColor="#FFFFFF" />
+                <Label Text="Completa tu perfil en 3 sencillos pasos" FontSize="13" TextColor="#A0A2B1" />
+            </VerticalStackLayout>
+        </Border>
+
+        <!-- CONTENIDO -->
+        <ScrollView Grid.Row="1" VerticalOptions="Fill" VerticalScrollBarVisibility="Never">
+            <VerticalStackLayout Padding="20,24,20,40" Spacing="24">
+
+                <!-- STEPPER (PASOS) -->
+                <Grid ColumnDefinitions="*,*,*" ColumnSpacing="12">
+                    <Button x:Name="Paso1Button" Text="1 DATOS" Clicked="Paso1_Clicked" BackgroundColor="#00E5FF" TextColor="#0B0C10" FontSize="11" FontAttributes="Bold" HeightRequest="46" CornerRadius="12" />
+                    <Button x:Name="Paso2Button" Grid.Column="1" Text="2 VEHÍCULO" Clicked="Paso2_Clicked" BackgroundColor="#1A1B22" TextColor="#4A4C5A" FontSize="11" FontAttributes="Bold" HeightRequest="46" CornerRadius="12" />
+                    <Button x:Name="Paso3Button" Grid.Column="2" Text="3 SEGURIDAD" Clicked="Paso3_Clicked" BackgroundColor="#1A1B22" TextColor="#4A4C5A" FontSize="11" FontAttributes="Bold" HeightRequest="46" CornerRadius="12" />
+                </Grid>
+
+                <!-- ========================================== -->
+                <!-- PANEL 1: DATOS PERSONALES                  -->
+                <!-- ========================================== -->
+                <VerticalStackLayout x:Name="PanelDatosPersonales" IsVisible="True" Spacing="20">
+
+                    <Border BackgroundColor="#15161C" Stroke="#2B2C36" StrokeThickness="1.5" Padding="24" StrokeShape="RoundRectangle 24">
+                        <VerticalStackLayout Spacing="20">
+
+                            <VerticalStackLayout Spacing="4">
+                                <Label Text="Datos personales" FontSize="20" FontAttributes="Bold" TextColor="#FFFFFF" />
+                                <Label Text="Información básica de tu perfil" FontSize="13" TextColor="#A0A2B1" />
+                            </VerticalStackLayout>
+
+                            <!-- NOMBRE -->
+                            <VerticalStackLayout Spacing="8">
+                                <Label Text="NOMBRE COMPLETO" FontSize="10" FontAttributes="Bold" TextColor="#00E5FF" CharacterSpacing="1" />
+                                <Border BackgroundColor="#0B0C10" Stroke="#2B2C36" StrokeThickness="1" Padding="14,4" StrokeShape="RoundRectangle 16" HeightRequest="56">
+                                    <Grid ColumnDefinitions="Auto,*" ColumnSpacing="12">
+                                        <Label Text="👤" FontSize="18" VerticalOptions="Center" />
+                                        <Entry Grid.Column="1" x:Name="NombreEntry" Placeholder="Tu nombre" TextChanged="OnNombreChanged" Style="{StaticResource RegistroEntryStyle}" VerticalOptions="Center" />
+                                    </Grid>
+                                </Border>
+                            </VerticalStackLayout>
+
+                            <!-- EDAD Y TELÉFONO -->
+                            <Grid ColumnDefinitions="*,*" ColumnSpacing="16">
+                                <VerticalStackLayout Grid.Column="0" Spacing="8">
+                                    <Label Text="EDAD" FontSize="10" FontAttributes="Bold" TextColor="#00E5FF" CharacterSpacing="1" />
+                                    <Border BackgroundColor="#0B0C10" Stroke="#2B2C36" StrokeThickness="1" Padding="14,4" StrokeShape="RoundRectangle 16" HeightRequest="56">
+                                        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="8">
+                                            <Label Text="🎂" FontSize="18" VerticalOptions="Center" />
+                                            <Entry Grid.Column="1" x:Name="EdadEntry" Placeholder="Ej. 30" Keyboard="Numeric" MaxLength="3" TextChanged="OnEdadChanged" Style="{StaticResource RegistroEntryStyle}" VerticalOptions="Center" />
+                                        </Grid>
+                                    </Border>
+                                </VerticalStackLayout>
+
+                                <VerticalStackLayout Grid.Column="1" Spacing="8">
+                                    <Label Text="TELÉFONO" FontSize="10" FontAttributes="Bold" TextColor="#00E5FF" CharacterSpacing="1" />
+                                    <Border BackgroundColor="#0B0C10" Stroke="#2B2C36" StrokeThickness="1" Padding="14,4" StrokeShape="RoundRectangle 16" HeightRequest="56">
+                                        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="8">
+                                            <Label Text="📱" FontSize="18" VerticalOptions="Center" />
+                                            <Entry Grid.Column="1" x:Name="TelefonoEntry" Placeholder="Celular" Keyboard="Numeric" MaxLength="10" TextChanged="OnTelefonoChanged" Style="{StaticResource RegistroEntryStyle}" VerticalOptions="Center" />
+                                        </Grid>
+                                    </Border>
+                                </VerticalStackLayout>
+                            </Grid>
+
+                            <!-- EMAIL -->
+                            <VerticalStackLayout Spacing="8">
+                                <Label Text="CORREO ELECTRÓNICO" FontSize="10" FontAttributes="Bold" TextColor="#00E5FF" CharacterSpacing="1" />
+                                <Border BackgroundColor="#0B0C10" Stroke="#2B2C36" StrokeThickness="1" Padding="14,4" StrokeShape="RoundRectangle 16" HeightRequest="56">
+                                    <Grid ColumnDefinitions="Auto,*" ColumnSpacing="12">
+                                        <Label Text="✉" FontSize="18" TextColor="#00E5FF" VerticalOptions="Center" />
+                                        <Entry Grid.Column="1" x:Name="EmailEntry" Placeholder="correo@ejemplo.com" Keyboard="Email" TextChanged="OnEmailChanged" Style="{StaticResource RegistroEntryStyle}" VerticalOptions="Center" />
+                                    </Grid>
+                                </Border>
+                            </VerticalStackLayout>
+
+                            <!-- DOCUMENTO -->
+                            <VerticalStackLayout Spacing="8">
+                                <Label Text="DOCUMENTO DE IDENTIDAD" FontSize="10" FontAttributes="Bold" TextColor="#00E5FF" CharacterSpacing="1" />
+                                <Border BackgroundColor="#0B0C10" Stroke="#2B2C36" StrokeThickness="1" Padding="14,4" StrokeShape="RoundRectangle 16" HeightRequest="56">
+                                    <Grid ColumnDefinitions="Auto,*" ColumnSpacing="12">
+                                        <Label Text="🪪" FontSize="18" VerticalOptions="Center" />
+                                        <Entry Grid.Column="1" x:Name="DocumentoEntry" Placeholder="Número de documento" Keyboard="Numeric" TextChanged="OnDocumentoChanged" Style="{StaticResource RegistroEntryStyle}" VerticalOptions="Center" />
+                                    </Grid>
+                                </Border>
+                            </VerticalStackLayout>
+
+                            <!-- SELFIE -->
+                            <VerticalStackLayout Spacing="12" Margin="0,10,0,0">
+                                <Label Text="VERIFICACIÓN DE IDENTIDAD" FontSize="10" FontAttributes="Bold" TextColor="#F5B800" CharacterSpacing="1" />
+                                <Button Text="📷 Tomar Selfie con Documento" Clicked="OnSubirSelfieClicked" BackgroundColor="#1A1B22" TextColor="#00E5FF" BorderColor="#00E5FF" BorderWidth="1" FontSize="12" FontAttributes="Bold" HeightRequest="56" CornerRadius="16" />
+
+                                <Border BackgroundColor="#0B0C10" Stroke="#2B2C36" StrokeThickness="1" Padding="8" StrokeShape="RoundRectangle 16">
+                                    <Image x:Name="SelfiePreview" HeightRequest="150" Aspect="AspectFit" IsVisible="False" />
+                                </Border>
+                            </VerticalStackLayout>
+
+                            <!-- BOTON CONTINUAR 1 -->
+                            <Button Text="CONTINUAR →" Clicked="OnSiguiente1Clicked" BackgroundColor="#00E676" TextColor="#0B0C10" FontSize="14" FontAttributes="Bold" HeightRequest="56" CornerRadius="16" Margin="0,10,0,0" CharacterSpacing="1"/>
+                        </VerticalStackLayout>
+                    </Border>
+                </VerticalStackLayout>
+
+
+                <!-- ========================================== -->
+                <!-- PANEL 2: VEHÍCULO                          -->
+                <!-- ========================================== -->
+                <VerticalStackLayout x:Name="PanelVehiculo" IsVisible="False" Spacing="20">
+                    <Border BackgroundColor="#15161C" Stroke="#2B2C36" StrokeThickness="1.5" Padding="24" StrokeShape="RoundRectangle 24">
+                        <VerticalStackLayout Spacing="20">
+
+                            <VerticalStackLayout Spacing="4">
+                                <Label Text="Datos del vehículo" FontSize="20" FontAttributes="Bold" TextColor="#FFFFFF" />
+                                <Label Text="Especificaciones y documentos del auto" FontSize="13" TextColor="#A0A2B1" />
+                            </VerticalStackLayout>
+
+                            <!-- LICENCIA -->
+                            <Grid ColumnDefinitions="*,*" ColumnSpacing="16">
+                                <VerticalStackLayout Grid.Column="0" Spacing="8">
+                                    <Label Text="TIPO LICENCIA" FontSize="10" FontAttributes="Bold" TextColor="#00E5FF" CharacterSpacing="1" />
+                                    <Border BackgroundColor="#0B0C10" Stroke="#2B2C36" StrokeThickness="1" Padding="14,4" StrokeShape="RoundRectangle 16" HeightRequest="56">
+                                        <Entry x:Name="TipoLicenciaEntry" Placeholder="Ej. B1" TextChanged="OnTipoLicenciaChanged" Style="{StaticResource RegistroEntryStyle}" VerticalOptions="Center" />
+                                    </Border>
+                                </VerticalStackLayout>
+                                <VerticalStackLayout Grid.Column="1" Spacing="8">
+                                    <Label Text="NÚMERO LICENCIA" FontSize="10" FontAttributes="Bold" TextColor="#00E5FF" CharacterSpacing="1" />
+                                    <Border BackgroundColor="#0B0C10" Stroke="#2B2C36" StrokeThickness="1" Padding="14,4" StrokeShape="RoundRectangle 16" HeightRequest="56">
+                                        <Entry x:Name="NumeroLicenciaEntry" Placeholder="Número" Keyboard="Numeric" TextChanged="OnNumeroLicenciaChanged" Style="{StaticResource RegistroEntryStyle}" VerticalOptions="Center" />
+                                    </Border>
+                                </VerticalStackLayout>
+                            </Grid>
+
+                            <!-- PLACA Y AÑO -->
+                            <Grid ColumnDefinitions="*,*" ColumnSpacing="16">
+                                <VerticalStackLayout Grid.Column="0" Spacing="8">
+                                    <Label Text="PLACA" FontSize="10" FontAttributes="Bold" TextColor="#00E5FF" CharacterSpacing="1" />
+                                    <Border BackgroundColor="#0B0C10" Stroke="#2B2C36" StrokeThickness="1" Padding="14,4" StrokeShape="RoundRectangle 16" HeightRequest="56">
+                                        <Entry x:Name="PlacaEntry" Placeholder="Ej. ABC123" MaxLength="7" TextChanged="OnPlacaChanged" Style="{StaticResource RegistroEntryStyle}" VerticalOptions="Center" />
+                                    </Border>
+                                </VerticalStackLayout>
+                                <VerticalStackLayout Grid.Column="1" Spacing="8">
+                                    <Label Text="AÑO" FontSize="10" FontAttributes="Bold" TextColor="#00E5FF" CharacterSpacing="1" />
+                                    <Border BackgroundColor="#0B0C10" Stroke="#2B2C36" StrokeThickness="1" Padding="14,4" StrokeShape="RoundRectangle 16" HeightRequest="56">
+                                        <Entry x:Name="AnioVehiculoEntry" Placeholder="Ej. 2022" Keyboard="Numeric" MaxLength="4" TextChanged="OnAnioChanged" Style="{StaticResource RegistroEntryStyle}" VerticalOptions="Center" />
+                                    </Border>
+                                </VerticalStackLayout>
+                            </Grid>
+
+                            <!-- COLOR -->
+                            <VerticalStackLayout Spacing="8">
+                                <Label Text="COLOR DEL VEHÍCULO" FontSize="10" FontAttributes="Bold" TextColor="#00E5FF" CharacterSpacing="1" />
+                                <Button x:Name="ColorSelectorButton" Text="Seleccionar color" Clicked="OnAbrirSelectorColor" BackgroundColor="#1A1B22" TextColor="#FFFFFF" FontSize="13" FontAttributes="Bold" HeightRequest="56" CornerRadius="16" />
+
+                                <Border x:Name="ColorPopup" IsVisible="False" BackgroundColor="#0B0C10" Stroke="#2B2C36" StrokeThickness="1" Padding="5" StrokeShape="RoundRectangle 16">
+                                    <CollectionView x:Name="ColorCollection" ItemsSource="{Binding ColoresVisuales}" SelectionMode="Single" SelectionChanged="OnColorVisualSeleccionado" HeightRequest="180">
+                                        <CollectionView.ItemTemplate>
+                                            <DataTemplate>
+                                                <Grid Padding="12" ColumnDefinitions="40,*">
+                                                    <BoxView WidthRequest="24" HeightRequest="24" CornerRadius="12" BackgroundColor="{Binding Hex}" VerticalOptions="Center" />
+                                                    <Label Grid.Column="1" Text="{Binding Nombre}" FontSize="14" FontAttributes="Bold" TextColor="#FFFFFF" VerticalOptions="Center" />
+                                                </Grid>
+                                            </DataTemplate>
+                                        </CollectionView.ItemTemplate>
+                                    </CollectionView>
+                                </Border>
+                            </VerticalStackLayout>
+
+                            <!-- MODELO -->
+                            <VerticalStackLayout Spacing="8">
+                                <Label Text="MODELO" FontSize="10" FontAttributes="Bold" TextColor="#00E5FF" CharacterSpacing="1" />
+                                <Border BackgroundColor="#0B0C10" Stroke="#2B2C36" StrokeThickness="1" StrokeShape="RoundRectangle 16" HeightRequest="56">
+                                    <SearchBar x:Name="ModeloSearchBar" Placeholder="Buscar modelo..." TextChanged="OnBuscarModelo" Style="{StaticResource RegistroSearchStyle}" VerticalOptions="Center" />
+                                </Border>
+
+                                <Border BackgroundColor="#0B0C10" Stroke="#2B2C36" StrokeThickness="1" StrokeShape="RoundRectangle 16">
+                                    <CollectionView x:Name="ModelosView" ItemsSource="{Binding ModelosFiltrados}" SelectionMode="Single" SelectionChanged="OnModeloSeleccionado" IsVisible="False" HeightRequest="160">
+                                        <CollectionView.ItemTemplate>
+                                            <DataTemplate>
+                                                <Label Text="{Binding}" Padding="16,12" TextColor="#FFFFFF" FontSize="14" FontAttributes="Bold" />
+                                            </DataTemplate>
+                                        </CollectionView.ItemTemplate>
+                                    </CollectionView>
+                                </Border>
+                            </VerticalStackLayout>
+
+                            <!-- DOCUMENTOS -->
+                            <VerticalStackLayout Spacing="12" Margin="0,10,0,0">
+                                <Label Text="DOCUMENTACIÓN FÍSICA" FontSize="10" FontAttributes="Bold" TextColor="#F5B800" CharacterSpacing="1" />
+                                <Button Text="📄 Subir tarjeta de propiedad" Clicked="OnSubirTarjetaClicked" BackgroundColor="#1A1B22" TextColor="#FFFFFF" FontSize="12" FontAttributes="Bold" HeightRequest="56" CornerRadius="16" />
+                                <Button Text="🚗 Subir fotos del vehículo" Clicked="OnSubirFotosVehiculoClicked" BackgroundColor="#1A1B22" TextColor="#FFFFFF" FontSize="12" FontAttributes="Bold" HeightRequest="56" CornerRadius="16" />
+                                <Button Text="🛡 Subir SOAT o seguro" Clicked="OnSubirSoatClicked" BackgroundColor="#1A1B22" TextColor="#FFFFFF" FontSize="12" FontAttributes="Bold" HeightRequest="56" CornerRadius="16" />
+                            </VerticalStackLayout>
+
+                            <!-- BOTON CONTINUAR 2 -->
+                            <Button Text="CONTINUAR →" Clicked="OnSiguiente2Clicked" BackgroundColor="#00E676" TextColor="#0B0C10" FontSize="14" FontAttributes="Bold" HeightRequest="56" CornerRadius="16" Margin="0,10,0,0" CharacterSpacing="1"/>
+                        </VerticalStackLayout>
+                    </Border>
+                </VerticalStackLayout>
+
+
+                <!-- ========================================== -->
+                <!-- PANEL 3: SEGURIDAD                         -->
+                <!-- ========================================== -->
+                <VerticalStackLayout x:Name="PanelSeguridad" IsVisible="False" Spacing="20">
+                    <Border BackgroundColor="#15161C" Stroke="#2B2C36" StrokeThickness="1.5" Padding="24" StrokeShape="RoundRectangle 24">
+                        <VerticalStackLayout Spacing="20">
+
+                            <VerticalStackLayout Spacing="4">
+                                <Label Text="Seguridad" FontSize="20" FontAttributes="Bold" TextColor="#FFFFFF" />
+                                <Label Text="Protege tu cuenta de conductor" FontSize="13" TextColor="#A0A2B1" />
+                            </VerticalStackLayout>
+
+                            <!-- PASSWORD -->
+                            <VerticalStackLayout Spacing="8">
+                                <Label Text="CONTRASEÑA" FontSize="10" FontAttributes="Bold" TextColor="#00E5FF" CharacterSpacing="1" />
+                                <Border BackgroundColor="#0B0C10" Stroke="#2B2C36" StrokeThickness="1" Padding="14,4" StrokeShape="RoundRectangle 16" HeightRequest="56">
+                                    <Grid ColumnDefinitions="Auto,*" ColumnSpacing="12">
+                                        <Label Text="🔒" FontSize="18" TextColor="#00E5FF" VerticalOptions="Center" />
+                                        <Entry Grid.Column="1" x:Name="PasswordEntry" Placeholder="Crea una contraseña" IsPassword="True" Style="{StaticResource RegistroEntryStyle}" VerticalOptions="Center" />
+                                    </Grid>
+                                </Border>
+                            </VerticalStackLayout>
+
+                            <!-- CONFIRMAR PASSWORD -->
+                            <VerticalStackLayout Spacing="8">
+                                <Label Text="CONFIRMAR CONTRASEÑA" FontSize="10" FontAttributes="Bold" TextColor="#00E5FF" CharacterSpacing="1" />
+                                <Border BackgroundColor="#0B0C10" Stroke="#2B2C36" StrokeThickness="1" Padding="14,4" StrokeShape="RoundRectangle 16" HeightRequest="56">
+                                    <Grid ColumnDefinitions="Auto,*" ColumnSpacing="12">
+                                        <Label Text="🔐" FontSize="18" TextColor="#00E5FF" VerticalOptions="Center" />
+                                        <Entry Grid.Column="1" x:Name="ConfirmarPasswordEntry" Placeholder="Repite tu contraseña" IsPassword="True" Style="{StaticResource RegistroEntryStyle}" VerticalOptions="Center" />
+                                    </Grid>
+                                </Border>
+                            </VerticalStackLayout>
+
+                            <!-- TERMINOS -->
+                            <Border BackgroundColor="#1A1B22" Stroke="#2B2C36" StrokeThickness="1" Padding="16" StrokeShape="RoundRectangle 16" Margin="0,10,0,0">
+                                <Grid ColumnDefinitions="Auto,*" ColumnSpacing="12">
+                                    <CheckBox x:Name="TerminosCheck" Color="#00E5FF" VerticalOptions="Center" />
+                                    <Label Grid.Column="1" Text="Acepto los términos y condiciones de Viandrive" FontSize="13" TextColor="#FFFFFF" VerticalOptions="Center" />
+                                </Grid>
+                            </Border>
+                            <Label Text="Tu información será encriptada, utilizada para verificar tu identidad y habilitar tu cuenta de forma segura." FontSize="11" TextColor="#4A4C5A" LineBreakMode="WordWrap" />
+
+                            <!-- BOTON FINALIZAR -->
+                            <Button Text="REGISTRARME AHORA" Clicked="OnRegistrarClicked" BackgroundColor="#F5B800" TextColor="#0B0C10" FontSize="14" FontAttributes="Bold" HeightRequest="56" CornerRadius="16" Margin="0,10,0,0" CharacterSpacing="1"/>
+                        </VerticalStackLayout>
+                    </Border>
+                </VerticalStackLayout>
+
+                <!-- PIE -->
+                <Label Text="VIANDRIVE • PLATAFORMA DE CONDUCTORES" FontSize="10" FontAttributes="Bold" TextColor="#4A4C5A" HorizontalOptions="Center" CharacterSpacing="1" />
+
+            </VerticalStackLayout>
+        </ScrollView>
+    </Grid>
+</ContentPage>

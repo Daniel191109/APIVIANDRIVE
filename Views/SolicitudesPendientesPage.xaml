@@ -1,0 +1,26 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ViandriveApp.Views.SolicitudesPendientesPage"
+             Title="Solicitudes pendientes">
+
+    <StackLayout Padding="15">
+        <Label Text="Solicitudes disponibles" FontSize="20" FontAttributes="Bold" Margin="0,10" />
+
+        <CollectionView x:Name="SolicitudesCollectionView">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Frame BorderColor="Gray" Margin="5" Padding="10">
+                        <StackLayout>
+                            <Label Text="{Binding Origen}" FontAttributes="Bold" />
+                            <Label Text="{Binding Destino}" />
+                            <Label Text="{Binding Duracion}" />
+                            <Label Text="{Binding Oferta, StringFormat='Oferta: ${0:N0}'}" />
+                            <Button Text="Aceptar viaje"
+                                    Command="{Binding AceptarCommand}" />
+                        </StackLayout>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </StackLayout>
+</ContentPage>

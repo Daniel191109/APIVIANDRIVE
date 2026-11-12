@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ViandriveApp.Views.LoginPage"
+             Title="Iniciar sesión"
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="#000000">
+
+    <ContentPage.Resources>
+        <Style x:Key="LoginEntryStyle" TargetType="Entry">
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="TextColor" Value="#FFFFFF" />
+            <Setter Property="PlaceholderColor" Value="#808080" />
+            <Setter Property="BackgroundColor" Value="Transparent" />
+            <Setter Property="HeightRequest" Value="48" />
+            <Setter Property="VerticalOptions" Value="Center" />
+        </Style>
+    </ContentPage.Resources>
+
+    <Grid RowDefinitions="Auto,*,Auto">
+
+        <!-- HEADER (Logo y Marca) -->
+        <Border x:Name="HeaderContainer"
+                Grid.Row="0"
+                Padding="28,45,28,35"
+                StrokeThickness="0"
+                BackgroundColor="#121212"
+                StrokeShape="RoundRectangle 0,0,0,35"
+                Opacity="0">
+
+            <Grid RowDefinitions="Auto,Auto,Auto" RowSpacing="18">
+                <!-- Logo -->
+                <Border x:Name="LogoContainer"
+            WidthRequest="74"
+            HeightRequest="74"
+            HorizontalOptions="Center"
+            BackgroundColor="#1A1A1A"
+            Stroke="#F5B800"
+            StrokeThickness="2"
+            StrokeShape="RoundRectangle 24">
+                    <Image Source="logo.jpg" Aspect="AspectFit" Margin="12" />
+                </Border>
+
+                <!-- Marca -->
+                <VerticalStackLayout Grid.Row="1" Spacing="2" HorizontalOptions="Center">
+                    <Label Text="VianDrive" FontSize="32" FontAttributes="Bold" TextColor="#FFFFFF" HorizontalOptions="Center" />
+                    <Label Text="Tu seguridad es nuestro camino" FontSize="12" CharacterSpacing="1" TextColor="#F5B800" HorizontalOptions="Center" />
+                </VerticalStackLayout>
+
+                <!-- Bienvenida -->
+                <VerticalStackLayout Grid.Row="2" Spacing="4" Margin="0,8,0,0">
+                    <Label x:Name="TitleLabel" Text="Bienvenido de nuevo" FontSize="24" FontAttributes="Bold" TextColor="#FFFFFF" HorizontalOptions="Center" Opacity="0" />
+                    <Label x:Name="SubtitleLabel" Text="Inicia sesión para continuar tu viaje" FontSize="13" TextColor="#A0A0A0" HorizontalOptions="Center" Opacity="0" />
+                </VerticalStackLayout>
+            </Grid>
+        </Border>
+
+        <!-- CONTENIDO (Formulario) -->
+        <ScrollView x:Name="FormContainer" Grid.Row="1" Margin="0,-20,0,0" ZIndex="2" Opacity="0">
+            <VerticalStackLayout Padding="22,0,22,20" Spacing="18">
+
+                <!-- Tarjeta Principal -->
+                <Border BackgroundColor="#121212"
+                        Stroke="#2A2A2A"
+                        StrokeThickness="1"
+                        Padding="22"
+                        StrokeShape="RoundRectangle 24">
+
+                    <VerticalStackLayout Spacing="18">
+
+                        <!-- Título -->
+                        <VerticalStackLayout Spacing="4">
+                            <Label Text="Iniciar sesión" FontSize="21" FontAttributes="Bold" TextColor="#FFFFFF" />
+                            <Label Text="Accede a tu cuenta de VianDrive" FontSize="13" TextColor="#A0A0A0" />
+                        </VerticalStackLayout>
+
+                        <!-- ================================= -->
+                        <!-- PASO 1: CREDENCIALES -->
+                        <!-- ================================= -->
+                        <VerticalStackLayout x:Name="PanelCredenciales" Spacing="16" IsVisible="True">
+
+                            <!-- CORREO -->
+                            <VerticalStackLayout Spacing="8">
+                                <Label Text="Correo electrónico" FontSize="13" FontAttributes="Bold" TextColor="#D0D0D0" />
+                                <Border BackgroundColor="#1A1A1A" Stroke="#333333" StrokeThickness="1" Padding="14,4" HeightRequest="62" StrokeShape="RoundRectangle 15">
+                                    <Grid ColumnDefinitions="Auto,*" ColumnSpacing="12">
+                                        <Label Text="✉" FontSize="21" TextColor="#F5B800" VerticalOptions="Center" />
+                                        <Entry Grid.Column="1" x:Name="UsernameEntry" Style="{StaticResource LoginEntryStyle}" Placeholder="correo@ejemplo.com" Keyboard="Email" ClearButtonVisibility="WhileEditing" />
+                                    </Grid>
+                                </Border>
+                            </VerticalStackLayout>
+
+                            <!-- CONTRASEÑA -->
+                            <VerticalStackLayout Spacing="8">
+                                <Label Text="Contraseña" FontSize="13" FontAttributes="Bold" TextColor="#D0D0D0" />
+                                <Border BackgroundColor="#1A1A1A" Stroke="#333333" StrokeThickness="1" Padding="14,4" HeightRequest="62" StrokeShape="RoundRectangle 15">
+                                    <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="12">
+                                        <Label Text="●" FontSize="18" TextColor="#F5B800" VerticalOptions="Center" />
+                                        <Entry Grid.Column="1" x:Name="PasswordEntry" Style="{StaticResource LoginEntryStyle}" Placeholder="Ingresa tu contraseña" IsPassword="True" />
+                                        <ImageButton Grid.Column="2" x:Name="TogglePasswordButton" Source="eye_closed.png" Clicked="OnTogglePasswordVisibility" BackgroundColor="Transparent" WidthRequest="34" HeightRequest="34" Padding="5" Aspect="AspectFit" VerticalOptions="Center" />
+                                    </Grid>
+                                </Border>
+                            </VerticalStackLayout>
+
+                            <Label Text="¿Olvidaste tu contraseña?" FontSize="13" TextColor="#F5B800" HorizontalOptions="End">
+                                <Label.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="OnForgotPasswordTapped" />
+                                </Label.GestureRecognizers>
+                            </Label>
+
+                            <!-- BOTÓN CONTINUAR -->
+                            <Button x:Name="LoginButton"
+                                    Text="Continuar →"
+                                    Clicked="OnLoginClicked"
+                                    FontSize="17"
+                                    FontAttributes="Bold"
+                                    TextColor="#000000"
+                                    BackgroundColor="#F5B800"
+                                    CornerRadius="16"
+                                    HeightRequest="58"
+                                    Margin="0,4,0,0" />
+                        </VerticalStackLayout>
+
+                        <!-- ================================= -->
+                        <!-- PASO 2: VERIFICACIÓN DE TOKEN -->
+                        <!-- ================================= -->
+                        <VerticalStackLayout x:Name="PanelTokenVerification" Spacing="16" IsVisible="False">
+
+                            <VerticalStackLayout Spacing="4">
+                                <Label Text="Verificación de seguridad" FontSize="18" FontAttributes="Bold" TextColor="#F5B800" />
+                                <Label Text="Hemos enviado un código de 6 dígitos a tu correo electrónico." FontSize="13" TextColor="#D0D0D0" />
+                            </VerticalStackLayout>
+
+                            <!-- TOKEN ENTRY -->
+                            <Border BackgroundColor="#1A1A1A" Stroke="#333333" StrokeThickness="1" Padding="14,4" HeightRequest="62" StrokeShape="RoundRectangle 15">
+                                <Grid ColumnDefinitions="Auto,*" ColumnSpacing="12">
+                                    <Label Text="🔒" FontSize="20" TextColor="#F5B800" VerticalOptions="Center" />
+                                    <Entry Grid.Column="1" 
+                                           x:Name="TokenEntry" 
+                                           Style="{StaticResource LoginEntryStyle}" 
+                                           Placeholder="Código de 6 dígitos" 
+                                           Keyboard="Numeric" 
+                                           MaxLength="6" />
+                                </Grid>
+                            </Border>
+
+                            <!-- BOTÓN VERIFICAR -->
+                            <Button x:Name="VerificarTokenButton"
+                                    Text="Verificar e Ingresar"
+                                    Clicked="OnVerificarTokenClicked"
+                                    FontSize="17"
+                                    FontAttributes="Bold"
+                                    TextColor="#000000"
+                                    BackgroundColor="#F5B800"
+                                    CornerRadius="16"
+                                    HeightRequest="58" />
+
+                            <!-- VOLVER ATRÁS -->
+                            <Button Text="← Volver"
+                                    Clicked="OnVolverCredencialesClicked"
+                                    FontSize="13"
+                                    TextColor="#A0A0A0"
+                                    BackgroundColor="Transparent"
+                                    HeightRequest="40" />
+                        </VerticalStackLayout>
+
+                        <!-- Separador -->
+                        <Grid ColumnDefinitions="*,Auto,*" ColumnSpacing="12" Margin="0,5">
+                            <BoxView Grid.Column="0" HeightRequest="1" BackgroundColor="#2A2A2A" VerticalOptions="Center" />
+                            <Label Grid.Column="1" Text="o" FontSize="12" TextColor="#808080" />
+                            <BoxView Grid.Column="2" HeightRequest="1" BackgroundColor="#2A2A2A" VerticalOptions="Center" />
+                        </Grid>
+
+                        <!-- Registro -->
+                        <HorizontalStackLayout HorizontalOptions="Center" Spacing="5">
+                            <Label Text="¿No tienes cuenta? " TextColor="#A0A0A0" FontSize="14" />
+                            <Label Text="Regístrate" TextColor="#F5B800" FontAttributes="Bold" FontSize="14">
+                                <Label.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="OnRegisterTapped" />
+                                </Label.GestureRecognizers>
+                            </Label>
+                        </HorizontalStackLayout>
+
+                    </VerticalStackLayout>
+                </Border>
+
+                <!-- Seguridad -->
+                <HorizontalStackLayout HorizontalOptions="Center" Spacing="7">
+                    <Label Text="●" FontSize="9" TextColor="#F5B800" VerticalOptions="Center" />
+                    <Label Text="Conexión segura y protegida" FontSize="12" TextColor="#808080" VerticalOptions="Center" />
+                </HorizontalStackLayout>
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!-- FOOTER -->
+        <Label x:Name="FooterLabel" Grid.Row="2" Text="VIANDRIVE • MOVILIDAD A TU MEDIDA" FontSize="9" CharacterSpacing="1.2" TextColor="#666666" HorizontalOptions="Center" Margin="0,6,0,14" Opacity="0" />
+
+    </Grid>
+</ContentPage>

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Viandrive - Ruta</title>
+    <style>
+        #map {
+            height: 100%;
+            width: 100%;
+        }
+
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            background-color: #ffffff;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+    </style>
+    <script>
+        // @ts-nocheck
+        let map, directionsService, directionsRenderer;
+        let vehiculosMarcadores = [];
+
+        function initMap() {
+            // AQUÍ RECIBIMOS LAS COORDENADAS DINÁMICAS DESDE C#
+            const origenLat = parseFloat("{{origenLat}}") || 0.829;
+            const origenLng = parseFloat("{{origenLng}}") || -77.640;
+            const destinoLat = parseFloat("{{destinoLat}}") || 0.815;
+            const destinoLng = parseFloat("{{destinoLng}}") || -77.635;
+
+            const origen = { lat: origenLat, lng: origenLng };
+            const destino = { lat: destinoLat, lng: destinoLng };
+
+            // Estilo para hacer el mapa blanco, limpio y minimalista
+            const whiteMapStyle = [
+                { elementType: "geometry", stylers: [{ color: "#fcfcfc" }] },
+                { elementType: "labels.text.fill", stylers: [{ color: "#747474" }] },
+                { elementType: "labels.text.stroke", stylers: [{ color: "#ffffff" }] },
+                { featureType: "road", elementType: "geometry", stylers: [{ color: "#ffffff" }] },
+                { featureType: "road", elementType: "geometry.fill", stylers: [{ color: "#ffffff" }] },
+                { featureType: "water", elementType: "geometry", stylers: [{ color: "#c9c9c9" }] }
+            ];
+
+            map = new google.maps.Map(document.getElementById("map"), {
+                zoom: 15,
+                center: origen,
+                styles: whiteMapStyle,
+                disableDefaultUI: true,
+                zoomControl: false
+            });
+
+            directionsService = new google.maps.DirectionsService();
+            directionsRenderer = new google.maps.DirectionsRenderer({
+                map: map,
+                polylineOptions: {
+                    strokeColor: "#FFC107", // 🟡 Línea de ruta de color Amarillo vibrante
+                    strokeWeight: 6,
+                    strokeOpacity: 0.9
+                },
+                suppressMarkers: true // Ocultamos los predeterminados para usar los nuestros
+            });
+
+            // 1. Marcador del Usuario (Persona) en el origen
+            new google.maps.Marker({
+                position: origen,
+                map: map,
+                title: "{{origenTitulo}}",
+                icon: {
+                    url: "https://cdn-icons-png.flaticon.com/512/1077/1077114.png", // Icono de persona
+                    scaledSize: new google.maps.Size(36, 36),
+                    anchor: new google.maps.Point(18, 18)
+                }
+            });
+
+            // 2. Marcador del Destino (Punto rojo)
+            new google.maps.Marker({
+                position: destino,
+                map: map,
+                title: "{{destinoTitulo}}",
+                icon: {
+                    path: google.maps.SymbolPath.CIRCLE,
+                    scale: 8,
+                    fillColor: "#FF0000", // 🔴 Punto rojo puro
+                    fillOpacity: 1,
+                    strokeWeight: 2,
+                    strokeColor: "#FFFFFF"
+                }
+            });
+
+            // 3. Trazar la ruta en el mapa automáticamente al cargar
+            directionsService.route({
+                origin: origen,
+                destination: destino,
+                travelMode: google.maps.TravelMode.DRIVING,
+            }, (result, status) => {
+                if (status === "OK") {
+                    directionsRenderer.setDirections(result);
+                }
+            });
+        }
+
+        // Mantiene visibles los conductores cercanos también en esta vista de ruta previa.
+        window.actualizarVehiculosActivos = function (respuesta) {
+            if (!map) return;
+            const vehiculos = Array.isArray(respuesta) ? respuesta :
+                (respuesta && Array.isArray(respuesta.conductores) ? respuesta.conductores : []);
+            vehiculosMarcadores.forEach(m => m.setMap(null));
+            vehiculosMarcadores = [];
+            vehiculos.forEach(v => {
+                const lat = Number(v.lat ?? v.Latitud ?? v.latitude ?? v.latitud);
+                const lng = Number(v.lng ?? v.Longitud ?? v.longitude ?? v.longitud);
+                if (!Number.isFinite(lat) || !Number.isFinite(lng) || lat < -90 || lat > 90 || lng < -180 || lng > 180 || (lat === 0 && lng === 0)) return;
+                vehiculosMarcadores.push(new google.maps.Marker({
+                    position: { lat, lng }, map,
+                    title: v.nombre ?? v.Nombre ?? "Conductor disponible",
+                    icon: { url: "https://maps.google.com/mapfiles/kml/shapes/cabs.png", scaledSize: new google.maps.Size(36, 36), anchor: new google.maps.Point(18, 18) },
+                    zIndex: 100
+                }));
+            });
+        };
+    </script>
+</head>
+<body>
+    <div id="map"></div>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAf_F2FMOZdm53A04qlb5U9MlyH4M-YOvw&libraries=places&callback=initMap" async defer></script>
+</body>
+</html>

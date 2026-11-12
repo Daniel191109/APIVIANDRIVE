@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ViaDriveApp.Views.ViajeEnCursoPage"
+             BackgroundColor="#0B0C10"
+             Shell.NavBarIsVisible="false">
+
+    <Grid>
+        <Grid RowDefinitions="*, Auto">
+
+            <!-- Mapa WebView a pantalla completa -->
+            <WebView x:Name="MapaRutaWeb" Grid.Row="0" HorizontalOptions="Fill" VerticalOptions="Fill" />
+
+            <!-- Panel Flotante Inferior de Información y Controles -->
+            <Border Grid.Row="1"
+                    BackgroundColor="#15161C"
+                    StrokeShape="RoundRectangle 24,24,0,0"
+                    Padding="24"
+                    Stroke="#2B2C36"
+                    StrokeThickness="1">
+                <Border.Shadow>
+                    <Shadow Brush="Black" Offset="0,-5" Radius="20" Opacity="0.4" />
+                </Border.Shadow>
+
+                <VerticalStackLayout Spacing="16">
+
+                    <!-- Indicador de Estado del Viaje -->
+                    <HorizontalStackLayout Spacing="12" HorizontalOptions="Center">
+                        <ActivityIndicator IsRunning="True" Color="#00E676" HeightRequest="20" WidthRequest="20" />
+                        <Label x:Name="LblEstadoViaje" Text="Esperando ubicación del conductor..."
+                               FontSize="14"
+                               FontAttributes="Bold"
+                               TextColor="#00E676"
+                               VerticalOptions="Center" />
+                    </HorizontalStackLayout>
+
+                    <!-- Información del Conductor y Tarifa -->
+                    <Border BackgroundColor="#0F1015"
+                            StrokeShape="RoundRectangle 16"
+                            Padding="16"
+                            Stroke="#2B2C36"
+                            StrokeThickness="1">
+                        <Grid ColumnDefinitions="*, Auto" RowDefinitions="Auto, Auto" RowSpacing="4">
+                            <Label x:Name="NombreConductorLabel" Text="Conductor: Cargando..." FontSize="14" FontAttributes="Bold" TextColor="White" />
+                            <Label x:Name="TarifaLabel" Grid.Column="1" Text="$0" FontSize="15" FontAttributes="Bold" TextColor="#00E5FF" HorizontalTextAlignment="End" />
+
+                            <Label x:Name="VehiculoInfoLabel" Grid.Row="1" Grid.ColumnSpan="2" Text="Vehículo • Placa" FontSize="12" TextColor="#A0A2B1" />
+                        </Grid>
+                    </Border>
+
+                    <!-- Botones de Acción (SOS y Cancelar) -->
+                    <Grid ColumnDefinitions="*, *" ColumnSpacing="12">
+
+                        <!-- Botón SOS de Emergencia -->
+                        <Button Grid.Column="0"
+                                Text="🚨 LLAMAR SOS"
+                                Clicked="BotonSos_Clicked"
+                                BackgroundColor="#D32F2F"
+                                TextColor="White"
+                                FontAttributes="Bold"
+                                CornerRadius="14"
+                                HeightRequest="50" />
+
+                        <!-- Botón Cancelar Carrera -->
+                        <Button Grid.Column="1"
+                                Text="❌ CANCELAR"
+                                Clicked="BotonCancelarViaje_Clicked"
+                                BackgroundColor="#1A1B22"
+                                TextColor="#FF3366"
+                                BorderColor="#FF3366"
+                                BorderWidth="1"
+                                FontAttributes="Bold"
+                                CornerRadius="14"
+                                HeightRequest="50" />
+                    </Grid>
+
+                </VerticalStackLayout>
+            </Border>
+
+        </Grid>
+
+        <!-- OVERLAY DE CALIFICACIÓN AL CONDUCTOR (APARECE AL FINALIZAR) -->
+        <Grid x:Name="OverlayCalificacionPasajero" BackgroundColor="#E60B0C10" IsVisible="False" VerticalOptions="Fill" HorizontalOptions="Fill" Padding="24">
+            <Border BackgroundColor="#12141D" StrokeThickness="0" StrokeShape="RoundRectangle 24" VerticalOptions="Center" HorizontalOptions="Center" Padding="24" WidthRequest="320">
+                <VerticalStackLayout Spacing="16" HorizontalOptions="Center">
+                    <Label Text="¡Llegaste a tu Destino!" TextColor="White" FontSize="20" FontAttributes="Bold" HorizontalOptions="Center"/>
+                    <Label Text="¿Cómo calificarías a tu conductor?" TextColor="#00E5FF" FontSize="13" HorizontalOptions="Center" HorizontalTextAlignment="Center"/>
+
+                    <!-- ESTRELLAS DE CALIFICACIÓN -->
+                    <HorizontalStackLayout Spacing="8" HorizontalOptions="Center">
+                        <Label x:Name="StarPasajero1" Text="★" FontSize="36" TextColor="#FFD700" ClassId="1">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="EstrellaPasajero_Tapped"/>
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <Label x:Name="StarPasajero2" Text="★" FontSize="36" TextColor="#FFD700" ClassId="2">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="EstrellaPasajero_Tapped"/>
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <Label x:Name="StarPasajero3" Text="★" FontSize="36" TextColor="#FFD700" ClassId="3">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="EstrellaPasajero_Tapped"/>
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <Label x:Name="StarPasajero4" Text="★" FontSize="36" TextColor="#FFD700" ClassId="4">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="EstrellaPasajero_Tapped"/>
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <Label x:Name="StarPasajero5" Text="★" FontSize="36" TextColor="#FFD700" ClassId="5">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="EstrellaPasajero_Tapped"/>
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </HorizontalStackLayout>
+
+                    <!-- CAMPO OPCIONAL PARA COMENTARIO -->
+                    <Border BackgroundColor="#0B0C10" StrokeShape="RoundRectangle 12" Stroke="#1F212A" StrokeThickness="1" Padding="12,0" HeightRequest="45">
+                        <Entry x:Name="ComentarioPasajeroEntry" Placeholder="Comentario opcional..." PlaceholderColor="#4A4C5A" TextColor="White" FontSize="13" BackgroundColor="Transparent" VerticalOptions="Center"/>
+                    </Border>
+
+                    <!-- BOTÓN ENVIAR -->
+                    <Button Text="ENVIAR CALIFICACIÓN" Clicked="EnviarCalificacionAlConductor_Clicked" BackgroundColor="#00E676" TextColor="Black" CornerRadius="14" HeightRequest="48" FontAttributes="Bold" Margin="0,6,0,0"/>
+                </VerticalStackLayout>
+            </Border>
+        </Grid>
+
+    </Grid>
+</ContentPage>

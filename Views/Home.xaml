@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="ViandriveApp.Views.Home"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="Panel Conductor"
+    Shell.NavBarIsVisible="False"
+    BackgroundColor="#0B0C10">
+
+    <Grid RowDefinitions="Auto,*,Auto">
+
+        <!-- HEADER FUTURISTA -->
+        <Border
+            Grid.Row="0"
+            BackgroundColor="#15161C"
+            StrokeThickness="0"
+            Padding="24,40,24,24"
+            StrokeShape="RoundRectangle 0,0,32,32">
+            <Border.Shadow>
+                <Shadow Brush="Black" Offset="0,6" Radius="15" Opacity="0.6" />
+            </Border.Shadow>
+
+            <Grid ColumnDefinitions="Auto,*" ColumnSpacing="16" VerticalOptions="Center">
+
+                <!-- FOTO / SELFIE DEL CONDUCTOR (Desde la BD) -->
+                <Border
+                    Grid.Column="0"
+                    WidthRequest="72"
+                    HeightRequest="72"
+                    BackgroundColor="#0B0C10"
+                    Stroke="#00E5FF"
+                    StrokeThickness="2"
+                    StrokeShape="RoundRectangle 24"
+                    VerticalOptions="Center">
+                    <Border.Shadow>
+                        <Shadow Brush="#00E5FF" Offset="0,0" Radius="10" Opacity="0.3" />
+                    </Border.Shadow>
+
+                    <Image
+                        x:Name="SelfieImage"
+                        Source="user_placeholder.png"
+                        Aspect="AspectFill"
+                        WidthRequest="72"
+                        HeightRequest="72" />
+                </Border>
+
+                <!-- TEXTOS DE BIENVENIDA -->
+                <VerticalStackLayout Grid.Column="1" Spacing="4" VerticalOptions="Center">
+                    <Label
+                        Text="VIANDRIVE • CONDUCTOR"
+                        FontSize="11"
+                        FontAttributes="Bold"
+                        TextColor="#00E5FF"
+                        CharacterSpacing="2" />
+
+                    <Label
+                        Text="Panel Principal"
+                        FontSize="22"
+                        FontAttributes="Bold"
+                        TextColor="#FFFFFF" />
+
+                    <Label
+                        x:Name="lblBienvenida"
+                        Text="Cargando perfil..."
+                        FontSize="13"
+                        TextColor="#A0A2B1" />
+                </VerticalStackLayout>
+            </Grid>
+        </Border>
+
+        <!-- CONTENIDO PRINCIPAL -->
+        <ScrollView Grid.Row="1" VerticalScrollBarVisibility="Never">
+
+            <VerticalStackLayout
+                Padding="20,24,20,30"
+                Spacing="20">
+
+                <!-- ESTADO DEL CONDUCTOR (DISPONIBLE / NO DISPONIBLE) -->
+                <Border
+                    BackgroundColor="#15161C"
+                    Stroke="#2B2C36"
+                    StrokeThickness="1.5"
+                    Padding="20"
+                    StrokeShape="RoundRectangle 24">
+
+                    <Grid ColumnDefinitions="*,Auto"
+                          RowDefinitions="Auto,Auto"
+                          ColumnSpacing="15"
+                          VerticalOptions="Center">
+
+                        <VerticalStackLayout
+                            Grid.RowSpan="2"
+                            Spacing="4"
+                            VerticalOptions="Center">
+
+                            <Label
+                                Text="ESTADO DE CONEXIÓN"
+                                FontSize="10"
+                                FontAttributes="Bold"
+                                TextColor="#00E5FF"
+                                CharacterSpacing="1" />
+
+                            <Label
+                                x:Name="lblEstado"
+                                Text="NO DISPONIBLE"
+                                FontSize="18"
+                                FontAttributes="Bold"
+                                TextColor="#FFFFFF" />
+
+                            <Label
+                                x:Name="lblEstadoDescripcion"
+                                Text="No recibirás solicitudes de viaje"
+                                FontSize="12"
+                                TextColor="#A0A2B1" />
+
+                        </VerticalStackLayout>
+
+                        <Switch
+                            x:Name="DisponibilidadSwitch"
+                            Grid.Column="1"
+                            Grid.RowSpan="2"
+                            VerticalOptions="Center"
+                            OnColor="#00E676"
+                            ThumbColor="#0B0C10"
+                            Toggled="DisponibilidadSwitch_Toggled" />
+
+                    </Grid>
+
+                </Border>
+
+                <!-- TÍTULO RESUMEN -->
+                <Label
+                    Text="RESUMEN DEL DÍA"
+                    FontSize="11"
+                    FontAttributes="Bold"
+                    TextColor="#00E5FF"
+                    CharacterSpacing="2"
+                    Margin="4,0,0,0" />
+
+                <!-- TARJETAS DE ESTADÍSTICAS NEÓN -->
+                <Grid
+                    ColumnDefinitions="*,*"
+                    RowDefinitions="Auto,Auto"
+                    ColumnSpacing="12"
+                    RowSpacing="12">
+
+
+                    <!-- SALDO -->
+                    <Border
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        BackgroundColor="#15161C"
+                        Stroke="#2B2C36"
+                        StrokeThickness="1.5"
+                        Padding="18"
+                        StrokeShape="RoundRectangle 20">
+                        <VerticalStackLayout Spacing="6">
+                            <Label Text="SALDO" FontSize="10" FontAttributes="Bold" TextColor="#A0A2B1" CharacterSpacing="1" />
+                            <Label x:Name="lblSaldo" Text="$0" FontSize="22" FontAttributes="Bold" TextColor="#00E5FF" />
+                            <Label Text="Disponible" FontSize="11" TextColor="#4A4C5A" />
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <!-- GANANCIAS -->
+                    <Border
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        BackgroundColor="#15161C"
+                        Stroke="#2B2C36"
+                        StrokeThickness="1.5"
+                        Padding="18"
+                        StrokeShape="RoundRectangle 20">
+                        <VerticalStackLayout Spacing="6">
+                            <Label Text="GANANCIAS" FontSize="10" FontAttributes="Bold" TextColor="#A0A2B1" CharacterSpacing="1" />
+                            <Label x:Name="lblGanancias" Text="$0" FontSize="22" FontAttributes="Bold" TextColor="#00E676" />
+                            <Label Text="Hoy" FontSize="11" TextColor="#4A4C5A" />
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <!-- VIAJES -->
+                    <Border
+                        Grid.Row="0"
+                        Grid.Column="1"
+                        BackgroundColor="#15161C"
+                        Stroke="#2B2C36"
+                        StrokeThickness="1.5"
+                        Padding="18"
+                        StrokeShape="RoundRectangle 20">
+                        <VerticalStackLayout Spacing="6">
+                            <Label Text="VIAJES" FontSize="10" FontAttributes="Bold" TextColor="#A0A2B1" CharacterSpacing="1" />
+                            <Label x:Name="lblViajes" Text="0" FontSize="22" FontAttributes="Bold" TextColor="#FFFFFF" />
+                            <Label Text="Completados" FontSize="11" TextColor="#4A4C5A" />
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <!-- CALIFICACIÓN -->
+                    <Border
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        BackgroundColor="#15161C"
+                        Stroke="#2B2C36"
+                        StrokeThickness="1.5"
+                        Padding="18"
+                        StrokeShape="RoundRectangle 20">
+                        <VerticalStackLayout Spacing="6">
+                            <Label Text="CALIFICACIÓN" FontSize="10" FontAttributes="Bold" TextColor="#A0A2B1" CharacterSpacing="1" />
+                            <Label x:Name="lblCalificacion" Text="5.0 ★" FontSize="22" FontAttributes="Bold" TextColor="#00E5FF" />
+                            <Label Text="Promedio" FontSize="11" TextColor="#4A4C5A" />
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <!-- ESTADO CUENTA -->
+                    <Border
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        BackgroundColor="#15161C"
+                        Stroke="#2B2C36"
+                        StrokeThickness="1.5"
+                        Padding="18"
+                        StrokeShape="RoundRectangle 20">
+                        <VerticalStackLayout Spacing="6">
+                            <Label Text="CUENTA" FontSize="10" FontAttributes="Bold" TextColor="#A0A2B1" CharacterSpacing="1" />
+                            <Label x:Name="lblConductorId" Text="Activo" FontSize="18" FontAttributes="Bold" TextColor="#00E676" />
+                            <Label Text="Verificada" FontSize="11" TextColor="#4A4C5A" />
+                        </VerticalStackLayout>
+                    </Border>
+
+                </Grid>
+
+                <!-- INFORMACIÓN DEL CONDUCTOR -->
+                <Border
+                    BackgroundColor="#15161C"
+                    Stroke="#2B2C36"
+                    StrokeThickness="1.5"
+                    Padding="20"
+                    StrokeShape="RoundRectangle 24">
+
+                    <VerticalStackLayout Spacing="14">
+                        <Label
+                            Text="INFORMACIÓN PERSONAL"
+                            FontSize="10"
+                            FontAttributes="Bold"
+                            TextColor="#00E5FF"
+                            CharacterSpacing="1" />
+
+                        <Grid
+                            ColumnDefinitions="Auto,*"
+                            RowDefinitions="Auto,Auto"
+                            ColumnSpacing="14"
+                            RowSpacing="12">
+
+                            <Label Text="👤" FontSize="18" VerticalOptions="Center" />
+                            <Label Grid.Column="1" x:Name="lblNombre" Text="Cargando..." FontSize="14" FontAttributes="Bold" TextColor="#FFFFFF" VerticalOptions="Center" />
+
+                            <Label Grid.Row="1" Text="🆔" FontSize="18" VerticalOptions="Center" />
+                            <Label Grid.Row="1" Grid.Column="1" x:Name="lblClienteId" Text="ID: --" FontSize="13" TextColor="#A0A2B1" VerticalOptions="Center" />
+                        </Grid>
+                    </VerticalStackLayout>
+                </Border>
+
+                <!-- BOTÓN PRINCIPAL (VER MAPA Y VIAJES) -->
+                <Button
+                    Text="VER MAPA Y VIAJES DISPONIBLES"
+                    Clicked="AbrirMapa_Clicked"
+                    BackgroundColor="#00E676"
+                    TextColor="#0B0C10"
+                    FontSize="13"
+                    FontAttributes="Bold"
+                    HeightRequest="56"
+                    CornerRadius="16"
+                    CharacterSpacing="1"
+                    Margin="0,4,0,0">
+                    <Button.Shadow>
+                        <Shadow Brush="#00E676" Offset="0,4" Radius="10" Opacity="0.3" />
+                    </Button.Shadow>
+                </Button>
+
+            </VerticalStackLayout>
+
+        </ScrollView>
+
+        <!-- FOOTER / CERRAR SESIÓN -->
+        <Border
+            Grid.Row="2"
+            BackgroundColor="#15161C"
+            StrokeThickness="0"
+            Padding="20,14"
+            StrokeShape="RoundRectangle 24,24,0,0">
+
+            <Grid ColumnDefinitions="*,Auto">
+                <Label
+                    Text="VIANDRIVE • DRIVER SYSTEM"
+                    FontSize="10"
+                    TextColor="#4A4C5A"
+                    FontAttributes="Bold"
+                    CharacterSpacing="1"
+                    VerticalOptions="Center" />
+
+                <Button
+                    Grid.Column="1"
+                    Text="Cerrar sesión"
+                    Clicked="CerrarSesion_Clicked"
+                    BackgroundColor="Transparent"
+                    TextColor="#FF5252"
+                    FontSize="12"
+                    FontAttributes="Bold"
+                    Padding="8,0" />
+            </Grid>
+        </Border>
+
+    </Grid>
+
+</ContentPage>

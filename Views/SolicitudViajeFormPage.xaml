@@ -1,0 +1,77 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ViandriveApp.Views.SolicitudViajeFormPage"
+             Title="Confirmar viaje">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="16">
+
+            <!-- Bienvenida -->
+            <Label x:Name="ClienteLabel"
+                   FontSize="18"
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center"
+                   TextColor="DarkBlue" />
+
+            <!-- Origen visual -->
+            <Label Text="Origen detectado" />
+            <Label x:Name="OrigenLabel"
+                   FontAttributes="Bold"
+                   FontSize="16"
+                   TextColor="DarkSlateGray" />
+
+            <!-- Destino visual -->
+            <Label Text="Destino seleccionado" />
+            <Label x:Name="DestinoLabel"
+                   FontAttributes="Bold"
+                   FontSize="16"
+                   TextColor="DarkSlateGray" />
+
+            <Label Text="Duración estimada" />
+            <Label x:Name="DuracionLabel"
+               FontAttributes="Italic"
+               FontSize="16"
+               TextColor="DarkSlateGray" />
+
+                    <Label Text="Oferta" />
+            <Label x:Name="OfertaLabel"
+               FontAttributes="Bold"
+               FontSize="16"
+               TextColor="DarkGreen" />
+
+
+            <!-- Oferta -->
+            <Entry x:Name="OfertaEntry"
+                   Text="6500"
+                   Keyboard="Numeric"
+                   Placeholder="Ej. 6000"
+                   TextChanged="OfertaEntry_TextChanged" /> 
+
+
+            <!-- Medio de pago -->
+            <Label Text="Medio de pago" />
+            <Picker x:Name="MedioPagoPicker">
+                <Picker.ItemsSource>
+                    <x:Array Type="{x:Type x:String}">
+                        <x:String>Efectivo</x:String>
+                        <x:String>Nequi</x:String>
+                        <x:String>Daviplata</x:String>
+                        <x:String>Transferencia</x:String>
+                    </x:Array>
+                </Picker.ItemsSource>
+            </Picker>
+
+            <!-- Botón -->
+            <Button Text="Confirmar viaje"
+                    Clicked="SolicitarViaje_Clicked"
+                    BackgroundColor="#40E0D0"
+                    TextColor="Black"
+                    FontAttributes="Bold"
+                    Margin="0,20,0,0"
+                    HorizontalOptions="Center"
+                    WidthRequest="180"
+                    HeightRequest="50" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

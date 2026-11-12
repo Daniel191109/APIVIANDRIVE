@@ -1,0 +1,45 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Ruta en Google Maps</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        input {
+            margin: 5px;
+            padding: 8px;
+            width: 300px;
+        }
+
+        iframe {
+            margin-top: 20px;
+            width: 100%;
+            height: 500px;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+    <h2>Visualizador de Ruta</h2>
+    <label>Origen:</label>
+    <input type="text" id="origen" value="Ipiales, Nariño, Colombia"><br>
+    <label>Destino:</label>
+    <input type="text" id="destino" value="Pasto, Nariño, Colombia"><br>
+    <button onclick="actualizarRuta()">Mostrar Ruta</button>
+
+    <iframe id="mapa" src=""></iframe>
+
+    <script>
+    function actualizarRuta() {
+      const origen = encodeURIComponent(document.getElementById('origen').value);
+      const destino = encodeURIComponent(document.getElementById('destino').value);
+      const url = `https://www.google.com/maps/embed/v1/directions?key=TU_CLAVE_API&origin=${origen}&destination=${destino}&mode=driving`;
+      document.getElementById('mapa').src = url;
+    }
+    </script>
+</body>
+</html>

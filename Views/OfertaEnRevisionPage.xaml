@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ViaDriveApp.Views.OfertaEnRevisionPage"
+             BackgroundColor="#0B0C10"
+             Shell.NavBarIsVisible="false">
+
+    <Grid Padding="20">
+        <ScrollView VerticalOptions="Center" VerticalScrollBarVisibility="Never">
+            <VerticalStackLayout Spacing="24" MaximumWidthRequest="500">
+
+                <!-- Título Superior -->
+                <Label Text="ESTADO DE LA OFERTA"
+                       FontSize="16"
+                       FontAttributes="Bold"
+                       HorizontalTextAlignment="Center"
+                       TextColor="#00E5FF" 
+                       CharacterSpacing="1" />
+
+                <!-- Tarjeta con mensaje principal y animación (Neón Shadow) -->
+                <Border BackgroundColor="#15161C"
+                        StrokeShape="RoundRectangle 24"
+                        Padding="24"
+                        Stroke="#00E5FF"
+                        StrokeThickness="1">
+                    <Border.Shadow>
+                        <Shadow Brush="#00E5FF" Offset="0,0" Radius="25" Opacity="0.2" />
+                    </Border.Shadow>
+
+                    <VerticalStackLayout Spacing="16">
+                        <ActivityIndicator IsRunning="True"
+                                           Color="#00E676"
+                                           HeightRequest="40"
+                                           WidthRequest="40"
+                                           HorizontalOptions="Center" />
+
+                        <Label Text="Tu oferta está en la mesa. Esperando que un conductor la acepte..."
+                               FontSize="15"
+                               FontAttributes="Bold"
+                               HorizontalTextAlignment="Center"
+                               TextColor="White"
+                               LineHeight="1.3" />
+                    </VerticalStackLayout>
+                </Border>
+
+                <!-- Barra de progreso con texto -->
+                <VerticalStackLayout Spacing="12" HorizontalOptions="Fill" Padding="10,0">
+                    <ProgressBar x:Name="EstadoBarra"
+                                 Progress="0.4"
+                                 HeightRequest="6"
+                                 BackgroundColor="#2B2C36"
+                                 ProgressColor="#00E676" />
+
+                    <Label x:Name="EstadoTexto"
+                           Text="Buscando conductores disponibles..."
+                           FontSize="12"
+                           FontAttributes="Bold"
+                           TextColor="#A0A2B1"
+                           HorizontalTextAlignment="Center" 
+                           CharacterSpacing="1"/>
+                </VerticalStackLayout>
+
+                <!-- Contenedor del Mapa WebView (Borde a Borde) -->
+                <Border BackgroundColor="#15161C"
+                        StrokeShape="RoundRectangle 20"
+                        Stroke="#2B2C36"
+                        StrokeThickness="1.5"
+                        HeightRequest="200"
+                        Padding="0">
+                    <Border.Shadow>
+                        <Shadow Brush="Black" Offset="0,8" Radius="15" Opacity="0.5" />
+                    </Border.Shadow>
+
+                    <WebView x:Name="MapaWeb" HorizontalOptions="Fill" VerticalOptions="Fill" />
+                </Border>
+
+                <!-- Detalle del viaje (Origen y Destino con línea conectora) -->
+                <Border BackgroundColor="#0F1015"
+                        StrokeShape="RoundRectangle 20"
+                        Padding="20"
+                        Stroke="#2B2C36"
+                        StrokeThickness="1">
+
+                    <Grid RowDefinitions="Auto,Auto" ColumnDefinitions="Auto,*" RowSpacing="16" ColumnSpacing="12">
+                        <!-- Línea conectora visual -->
+                        <BoxView Grid.RowSpan="2" Grid.Column="0" WidthRequest="2" Color="#2B2C36" HorizontalOptions="Center" Margin="0,12" />
+
+                        <!-- Origen -->
+                        <BoxView Grid.Row="0" Grid.Column="0" WidthRequest="12" HeightRequest="12" CornerRadius="6" Color="#00E5FF" VerticalOptions="Center" />
+                        <Label x:Name="OrigenLabel"
+                               Grid.Row="0" Grid.Column="1"
+                               Text="Origen: Cargando..."
+                               FontSize="13"
+                               FontAttributes="Bold"
+                               TextColor="White"
+                               LineBreakMode="TailTruncation" />
+
+                        <!-- Destino -->
+                        <BoxView Grid.Row="1" Grid.Column="0" WidthRequest="12" HeightRequest="12" CornerRadius="6" Color="#FF3366" VerticalOptions="Center" />
+                        <Label x:Name="DestinoLabel"
+                               Grid.Row="1" Grid.Column="1"
+                               Text="Destino: Cargando..."
+                               FontSize="13"
+                               FontAttributes="Bold"
+                               TextColor="White"
+                               LineBreakMode="TailTruncation" />
+                    </Grid>
+                </Border>
+
+                <!-- Botón de retorno estilo Outlined (bordeado) -->
+                <Button Text="VOLVER AL MAPA"
+                        Clicked="VolverMapa_Clicked"
+                        BackgroundColor="#1A1B22"
+                        TextColor="#00E5FF"
+                        BorderColor="#00E5FF"
+                        BorderWidth="1"
+                        FontAttributes="Bold"
+                        CornerRadius="14"
+                        HeightRequest="52"
+                        CharacterSpacing="1"
+                        Margin="0,10,0,0" />
+
+            </VerticalStackLayout>
+        </ScrollView>
+    </Grid>
+</ContentPage>

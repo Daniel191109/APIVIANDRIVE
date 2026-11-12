@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ViandriveApp.Views.ModoConductorInicioPage"
+             BackgroundColor="#0B0D17"
+             NavigationPage.HasNavigationBar="False">
+
+    <Grid>
+        <!-- FONDO DE RESPALDO -->
+        <BoxView BackgroundColor="#0B0D17" />
+
+        <!-- CAPA 1: MAPA GPS EN TIEMPO REAL (MULTI-PLATAFORMA) -->
+        <WebView x:Name="MapaFondoWeb" 
+                 HorizontalOptions="Fill" 
+                 VerticalOptions="Fill"
+                 BackgroundColor="Transparent" />
+
+        <!-- CAPA 2: INTERFAZ HUD FUTURISTA (SUPERPUESTA) -->
+        <Grid RowDefinitions="Auto, *, Auto" Padding="15">
+
+            <!-- BARRA SUPERIOR HUD -->
+            <Frame Grid.Row="0" 
+                   BackgroundColor="#E60B0D17" 
+                   BorderColor="#00E5FF" 
+                   CornerRadius="16" 
+                   HasShadow="True" 
+                   Padding="12">
+                <Grid ColumnDefinitions="*, Auto">
+                    <VerticalStackLayout Grid.Column="0" Spacing="2">
+                        <Label Text="MODO RADAR ACTIVO" 
+                               TextColor="#00E5FF" 
+                               FontSize="12" 
+                               FontAttributes="Bold"/>
+                        <Label Text="Buscando pasajeros cercanos..." 
+                               TextColor="#FFFFFF" 
+                               FontSize="16" 
+                               FontAttributes="Bold"/>
+                    </VerticalStackLayout>
+                    <Switch x:Name="SwitchRadar" 
+                            Grid.Column="1" 
+                            IsToggled="True" 
+                            OnColor="#00E676" 
+                            ThumbColor="#00E5FF"/>
+                </Grid>
+            </Frame>
+
+            <!-- CAPA 3: BURBUJAS FLOTANTES DE NOTIFICACIÓN -->
+            <CollectionView Grid.Row="1" 
+                            ItemsSource="{Binding Solicitudes}" 
+                            Margin="0,15,0,0">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame BackgroundColor="#F2121726" 
+                               BorderColor="#00E5FF" 
+                               CornerRadius="20" 
+                               HasShadow="True" 
+                               Padding="16" 
+                               Margin="0,0,0,12">
+
+                            <VerticalStackLayout Spacing="10">
+                                <Grid ColumnDefinitions="*, Auto">
+                                    <HorizontalStackLayout Grid.Column="0" Spacing="8">
+                                        <Label Text="👤" FontSize="18" VerticalOptions="Center"/>
+                                        <Label Text="{Binding NombrePasajero}" 
+                                               TextColor="#FFFFFF" 
+                                               FontSize="16" 
+                                               FontAttributes="Bold" 
+                                               VerticalOptions="Center"/>
+                                    </HorizontalStackLayout>
+
+                                    <Frame Grid.Column="1" 
+                                           BackgroundColor="#2600E676" 
+                                           BorderColor="#00E676" 
+                                           CornerRadius="10" 
+                                           Padding="8,4" 
+                                           HasShadow="False">
+                                        <Label Text="{Binding Oferta, StringFormat='${0:N0}'}" 
+                                               TextColor="#00E676" 
+                                               FontSize="16" 
+                                               FontAttributes="Bold"/>
+                                    </Frame>
+                                </Grid>
+
+                                <VerticalStackLayout Spacing="4">
+                                    <HorizontalStackLayout Spacing="8">
+                                        <Label Text="📍" TextColor="#00E5FF" FontSize="14"/>
+                                        <Label Text="{Binding Origen}" TextColor="#B2B8C6" FontSize="13" LineBreakMode="TailTruncation"/>
+                                    </HorizontalStackLayout>
+                                    <HorizontalStackLayout Spacing="8">
+                                        <Label Text="🎯" TextColor="#FF3366" FontSize="14"/>
+                                        <Label Text="{Binding Destino}" TextColor="#B2B8C6" FontSize="13" LineBreakMode="TailTruncation"/>
+                                    </HorizontalStackLayout>
+                                </VerticalStackLayout>
+
+                                <Button Text="ACEPTAR CARRERA" 
+                                        Command="{Binding AceptarCommand}"
+                                        BackgroundColor="#00E5FF" 
+                                        TextColor="#0B0D17" 
+                                        FontAttributes="Bold" 
+                                        CornerRadius="12" 
+                                        HeightRequest="45"
+                                        Margin="0,4,0,0"/>
+                            </VerticalStackLayout>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <!-- PIE DE PÁGINA -->
+            <Button Grid.Row="2" 
+                    x:Name="BtnCerrarSesion"
+                    Text="CERRAR SESIÓN" 
+                    Clicked="OnCerrarSesionClicked"
+                    BackgroundColor="#26FF3366" 
+                    TextColor="#FF3366" 
+                    BorderColor="#FF3366"
+                    BorderWidth="1"
+                    CornerRadius="12" 
+                    HeightRequest="40"
+                    FontSize="12"/>
+        </Grid>
+    </Grid>
+</ContentPage>

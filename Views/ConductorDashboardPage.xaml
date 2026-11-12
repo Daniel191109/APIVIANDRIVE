@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ViandriveApp.Views.ConductorDashboardPage"
+             Title="Panel del Conductor">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="15">
+
+            <Label Text="🚗 Panel del Conductor"
+                   FontSize="24"
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center" />
+
+            <!-- Datos del conductor -->
+            <Label x:Name="NombreLabel"
+                   FontSize="18"
+                   HorizontalOptions="Center" />
+
+            <Frame BorderColor="Gray" Padding="10">
+                <VerticalStackLayout>
+                    <Label Text="Vehículo" FontAttributes="Bold" FontSize="16" />
+                    <Label x:Name="PlacaLabel" FontSize="14" />
+                    <Label x:Name="ModeloLabel" FontSize="14" />
+                    <Label x:Name="ColorLabel" FontSize="14" />
+                    <Label x:Name="AnioLabel" FontSize="14" />
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Estado de conexión -->
+            <Label x:Name="EstadoLabel"
+                   Text="Estado: Desconectado"
+                   FontSize="18"
+                   TextColor="Red"
+                   HorizontalOptions="Center" />
+
+            <Button x:Name="ToggleEstadoButton"
+                    Text="Conectarse"
+                    Clicked="OnToggleEstadoClicked"
+                    BackgroundColor="#5A2D98"
+                    TextColor="White"
+                    CornerRadius="10" />
+
+            <!-- Ubicación -->
+            <Label x:Name="UbicacionLabel"
+                   Text="Ubicación actual: --"
+                   FontSize="14"
+                   HorizontalOptions="Center"
+                   HorizontalTextAlignment="Center" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

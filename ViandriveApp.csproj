@@ -1,0 +1,108 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<CheckEolTargetFramework>false</CheckEolTargetFramework>
+		<CheckEolWorkloads>false</CheckEolWorkloads>
+		<!-- Supresión de advertencias de compatibilidad y NuGet -->
+		<NoWarn>$(NoWarn);NETSDK1202;NU1202;NU1701;MA002</NoWarn>
+		<AssetTargetFallback>$(AssetTargetFallback);net8.0-android34.0</AssetTargetFallback>
+		
+		<!-- Frameworks de destino múltiples para Android y Windows -->
+		<TargetFrameworks>net10.0-android;net10.0-windows10.0.19041.0</TargetFrameworks>
+		
+		<AndroidPackageFormat>apk</AndroidPackageFormat>
+		<OutputType>Exe</OutputType>
+		<RootNamespace>ViandriveApp</RootNamespace>
+		<UseMaui>true</UseMaui>
+		<SingleProject>true</SingleProject>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<ApplicationTitle>ViandriveApp</ApplicationTitle>
+		<ApplicationId>com.viandrive.app</ApplicationId>
+		<ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
+		<ApplicationVersion>1</ApplicationVersion>
+		<WindowsPackageType>None</WindowsPackageType>
+		
+		<!-- Versiones de plataforma estables para Android y Windows -->
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">21.0</SupportedOSPlatformVersion>
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.19041.0</SupportedOSPlatformVersion>
+		<TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.19041.0</TargetPlatformMinVersion>
+		<TargetPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">36.0</TargetPlatformVersion>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<!-- Recursos principales y de diseño -->
+		<MauiIcon Include="Resources\AppIcon\appicon.svg" />
+		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#512BD4" BaseSize="128,128" />
+
+		<!-- Declaración explícita e individual de imágenes para evitar conflictos de nombres duplicados -->
+		<MauiImage Include="Resources\Images\dotnet_bot.png" />
+		<MauiImage Include="Resources\Images\eye_closed.png" />
+		<MauiImage Include="Resources\Images\eye_open.png" />
+		<MauiImage Include="Resources\Images\logo.jpg" />
+		<MauiImage Include="Resources\Images\revision_oferta.png" />
+
+		<MauiFont Include="Resources\Fonts\*" />
+		<MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
+	</ItemGroup>
+
+	<!-- Paquetes NuGet unificados para .NET 10 y Lottie integrado -->
+	<ItemGroup>
+		<PackageReference Include="Microsoft.Maui.Controls" Version="10.0.0" />
+		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="10.0.0" />
+		<PackageReference Include="Microsoft.Maui.Controls.Maps" Version="10.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.0" />
+		<PackageReference Include="Anjo.Android.Lottie" Version="6.6.3" NoWarn="NU1202" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Folder Include="Properties\" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Update="Views\SolicitudViajePage.xaml.cs">
+			<DependentUpon>SolicitudViajePage.xaml</DependentUpon>
+		</Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+		<MauiXaml Update="Views\ConductorDashboardPage.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Views\ConfirmarViajePage.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Views\LoginConductorPage.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Views\MapaOfertaPage.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Views\ModoConductorInicioPage.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Views\OfertaEnRevisionPage.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Views\RegistroConductorPage.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Views\RegistroExitosoPage.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Views\SolicitudesPendientesPage.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Views\SolicitudViajeFormPage.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Views\SolicitudViajePage.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Views\MapaPage.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Views\LoginPage.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+	</ItemGroup>
+</Project>

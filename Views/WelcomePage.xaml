@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ViandriveApp.Views.WelcomePage"
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="#0B0C10">
+
+    <Grid RowDefinitions="*, Auto" Padding="24">
+
+        <!-- CAPA 1: LOGO DE LA APP COMO FONDO GIGANTE -->
+        <Image x:Name="BgLogoImage"
+               Grid.RowSpan="2"
+               Source="logo.jpg" 
+               Aspect="AspectFit" 
+               HorizontalOptions="Center" 
+               VerticalOptions="Center"
+               WidthRequest="450"
+               HeightRequest="450"
+               Opacity="0.08"
+               InputTransparent="True" />
+
+        <!-- Gradiente oscuro para asegurar legibilidad sobre el fondo -->
+        <BoxView Grid.RowSpan="2" InputTransparent="True">
+            <BoxView.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                    <GradientStop Color="#800B0C10" Offset="0.0" />
+                    <GradientStop Color="#000B0C10" Offset="0.4" />
+                    <GradientStop Color="#E60B0C10" Offset="0.8" />
+                    <GradientStop Color="#FF0B0C10" Offset="1.0" />
+                </LinearGradientBrush>
+            </BoxView.Background>
+        </BoxView>
+
+        <!-- CAPA 2: ENCABEZADO / LOGO PRINCIPAL -->
+        <VerticalStackLayout Grid.Row="0" 
+                             x:Name="HeaderContainer"
+                             VerticalOptions="Center" 
+                             HorizontalOptions="Center"
+                             Spacing="14"
+                             Opacity="0">
+
+            <!-- Contenedor del Logo superior con borde Glow -->
+            <Border WidthRequest="80" 
+                    HeightRequest="80" 
+                    BackgroundColor="#15161C" 
+                    Stroke="#F5B800" 
+                    StrokeThickness="1.2" 
+                    StrokeShape="RoundRectangle 24" 
+                    HorizontalOptions="Center"
+                    Padding="16">
+                <Border.Shadow>
+                    <Shadow Brush="#F5B800" Offset="0,0" Radius="22" Opacity="0.25" />
+                </Border.Shadow>
+                <Image Source="logo.jpg" Aspect="AspectFit" Margin="1" />
+            </Border>
+
+            <Label Text="VIANDRIVE" 
+                   FontSize="28" 
+                   FontAttributes="Bold" 
+                   TextColor="#FFFFFF" 
+                   HorizontalOptions="Center" 
+                   CharacterSpacing="3"/>
+
+            <Label Text="¿Cómo deseas moverte hoy?" 
+                   FontSize="13" 
+                   TextColor="#8F92A1" 
+                   HorizontalOptions="Center" />
+        </VerticalStackLayout>
+
+        <!-- CAPA 3: LOS DOS CUADROS ANIMADOS LADO A LADO -->
+        <Grid Grid.Row="1" 
+              x:Name="CardsContainer"
+              ColumnDefinitions="*, *" 
+              ColumnSpacing="15" 
+              Margin="0,0,0,30"
+              Opacity="0">
+
+            <!-- CUADRO 1: PASAJERO (Estilo Dorado / Amarillo) -->
+            <Border Grid.Column="0"
+                    x:Name="CardPasajero"
+                    BackgroundColor="#15161C"
+                    Stroke="#F5B800"
+                    StrokeThickness="1.5"
+                    StrokeShape="RoundRectangle 24"
+                    Padding="16,24"
+                    HeightRequest="180">
+                <Border.Shadow>
+                    <Shadow Brush="#F5B800" Offset="0,6" Radius="15" Opacity="0.2" />
+                </Border.Shadow>
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="CardPasajero_Tapped" />
+                </Border.GestureRecognizers>
+
+                <VerticalStackLayout Spacing="12" VerticalOptions="Center">
+                    <Border WidthRequest="46" HeightRequest="46" BackgroundColor="#261E00" Stroke="#F5B800" StrokeThickness="1" StrokeShape="RoundRectangle 14" HorizontalOptions="Center">
+                        <Label Text="👤" FontSize="20" HorizontalOptions="Center" VerticalOptions="Center"/>
+                    </Border>
+                    <Label Text="PASAJERO" FontSize="13" FontAttributes="Bold" TextColor="#F5B800" HorizontalOptions="Center" CharacterSpacing="1"/>
+                    <Label Text="Viaja seguro y al mejor precio" FontSize="11" TextColor="#8F92A1" HorizontalOptions="Center" HorizontalTextAlignment="Center" LineBreakMode="WordWrap"/>
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- CUADRO 2: CONDUCTOR (Estilo Cyan Neón) -->
+            <Border Grid.Column="1"
+                    x:Name="CardConductor"
+                    BackgroundColor="#15161C"
+                    Stroke="#00E5FF"
+                    StrokeThickness="1.5"
+                    StrokeShape="RoundRectangle 24"
+                    Padding="16,24"
+                    HeightRequest="180">
+                <Border.Shadow>
+                    <Shadow Brush="#00E5FF" Offset="0,6" Radius="15" Opacity="0.2" />
+                </Border.Shadow>
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="CardConductor_Tapped" />
+                </Border.GestureRecognizers>
+
+                <VerticalStackLayout Spacing="12" VerticalOptions="Center">
+                    <Border WidthRequest="46" HeightRequest="46" BackgroundColor="#001F26" Stroke="#00E5FF" StrokeThickness="1" StrokeShape="RoundRectangle 14" HorizontalOptions="Center">
+                        <Label Text="🚗" FontSize="20" HorizontalOptions="Center" VerticalOptions="Center"/>
+                    </Border>
+                    <Label Text="CONDUCTOR" FontSize="13" FontAttributes="Bold" TextColor="#00E5FF" HorizontalOptions="Center" CharacterSpacing="1"/>
+                    <Label Text="Genera ingresos flexibles" FontSize="11" TextColor="#8F92A1" HorizontalOptions="Center" HorizontalTextAlignment="Center" LineBreakMode="WordWrap"/>
+                </VerticalStackLayout>
+            </Border>
+
+        </Grid>
+
+    </Grid>
+</ContentPage>

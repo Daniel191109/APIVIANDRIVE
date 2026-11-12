@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Ubicación actual</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        #map {
+            height: 100%;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+
+    <script>
+        // @ts-nocheck
+        window.viandriveApp = window.viandriveApp || {};
+
+        function initMap() {
+            const lat = parseFloat("{{origenLat}}") || 0.829;
+            const lng = parseFloat("{{origenLng}}") || -77.640;
+            const posicion = { lat: lat, lng: lng };
+
+            // Asegurar la inicialización correcta del mapa de Google
+            window.viandriveApp.map = new google.maps.Map(document.getElementById("map"), {
+                zoom: 15,
+                center: posicion,
+                disableDefaultUI: true
+            });
+
+            new google.maps.Marker({
+                position: posicion,
+                map: window.viandriveApp.map,
+                title: "{{origenTitulo}}",
+                icon: {
+                    url: "https://cdn-icons-png.flaticon.com/512/9131/9131529.png",
+                    scaledSize: new google.maps.Size(40, 40)
+                }
+            });
+        }
+
+        // Pinta únicamente ubicaciones reales entregadas por /api/conductores/activos.
+        window.actualizarVehiculosActivos = function (respuesta) {
+            const mapa = window.viandriveApp.map;
+            if (!mapa) return;
+
+            const vehiculos = Array.isArray(respuesta) ? respuesta :
+                (respuesta && Array.isArray(respuesta.conductores) ? respuesta.conductores : []);
+
+            if (!window.viandriveApp.marcadoresVehiculos) window.viandriveApp.marcadoresVehiculos = [];
+            window.viandriveApp.marcadoresVehiculos.forEach(m => m.setMap(null));
+            window.viandriveApp.marcadoresVehiculos = [];
+
+            vehiculos.forEach(v => {
+                const lat = Number(v.lat ?? v.Latitud ?? v.latitude ?? v.latitud);
+                const lng = Number(v.lng ?? v.Longitud ?? v.longitude ?? v.longitud);
+                if (!Number.isFinite(lat) || !Number.isFinite(lng) || lat < -90 || lat > 90 || lng < -180 || lng > 180 || (lat === 0 && lng === 0)) return;
+
+                const nombre = v.nombre ?? v.Nombre ?? v.nombreConductor ?? 'Conductor disponible';
+                const vehiculo = v.vehiculoInfo ?? v.VehiculoInfo ?? '';
+                const marcador = new google.maps.Marker({
+                    position: { lat, lng },
+                    map: mapa,
+                    title: vehiculo ? `${nombre} • ${vehiculo}` : nombre,
+                    icon: {
+                        url: 'https://maps.google.com/mapfiles/kml/shapes/cabs.png',
+                        scaledSize: new google.maps.Size(38, 38),
+                        anchor: new google.maps.Point(19, 19)
+                    },
+                    zIndex: 100
+                });
+                window.viandriveApp.marcadoresVehiculos.push(marcador);
+            });
+        };
+
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAf_F2FMOZdm53A04qlb5U9MlyH4M-YOvw&callback=initMap" async defer></script>
+</body>
+</html>

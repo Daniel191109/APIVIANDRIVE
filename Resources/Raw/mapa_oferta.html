@@ -1,0 +1,143 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Viandrive - Mapa Conductor</title>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            background-color: #f4f4f4;
+            overflow: hidden;
+        }
+
+        #map {
+            height: 100%;
+            width: 100%;
+        }
+
+        #error-banner {
+            display: none;
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            background: #D32F2F;
+            color: white;
+            padding: 10px;
+            border-radius: 8px;
+            font-family: sans-serif;
+            font-size: 13px;
+            z-index: 9999;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            text-align: center;
+            font-weight: bold;
+        }
+    </style>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAf_F2FMOZdm53A04qlb5U9MlyH4M-YOvw"></script>
+    <script>
+        // @ts-nocheck
+        let map, directionsService, directionsRenderer;
+        let marcadorConductor = null, marcadorOrigen = null, marcadorDestino = null;
+
+        function initMap() {
+            try {
+                const rawOrigLat = "{{origenLat}}".replace(/,/g, '.');
+                const rawOrigLng = "{{origenLng}}".replace(/,/g, '.');
+                const rawDestLat = "{{destinoLat}}".replace(/,/g, '.');
+                const rawDestLng = "{{destinoLng}}".replace(/,/g, '.');
+
+                const origLat = parseFloat(rawOrigLat) || 0;
+                const origLng = parseFloat(rawOrigLng) || 0;
+                const destLat = parseFloat(rawDestLat) || 0;
+                const destLng = parseFloat(rawDestLng) || 0;
+
+                map = new google.maps.Map(document.getElementById("map"), {
+                    zoom: 15,
+                    center: { lat: origLat !== 0 ? origLat : 0.829, lng: origLng !== 0 ? origLng : -77.640 },
+                    disableDefaultUI: true,
+                    zoomControl: false
+                });
+
+                directionsService = new google.maps.DirectionsService();
+                directionsRenderer = new google.maps.DirectionsRenderer({
+                    map: map,
+                    polylineOptions: { strokeColor: "#00C853", strokeWeight: 6, strokeOpacity: 0.9 },
+                    suppressMarkers: true
+                });
+
+                if (origLat !== 0 && destLat !== 0) {
+                    actualizarRutaYEstado(origLat, origLng, destLat, destLng, "Evaluando");
+                }
+            } catch (e) {
+                console.error("Error al iniciar mapa: " + e.message);
+            }
+        }
+
+        window.actualizarRutaYEstado = function(latO, lngO, latD, lngD, estado) {
+            if (!directionsService || !map) {
+                setTimeout(() => window.actualizarRutaYEstado(latO, lngO, latD, lngD, estado), 500);
+                return;
+            }
+
+            const origen = { lat: parseFloat(String(latO).replace(/,/g, '.')), lng: parseFloat(String(lngO).replace(/,/g, '.')) };
+            const destino = { lat: parseFloat(String(latD).replace(/,/g, '.')), lng: parseFloat(String(lngD).replace(/,/g, '.')) };
+
+            const banner = document.getElementById("error-banner");
+
+            // Validación estricta para evitar coordenadas al mar (0,0)
+            if (origen.lat === 0 || destino.lat === 0) {
+                banner.style.display = "block";
+                banner.innerText = "Error: Coordenadas de origen o destino inválidas (0,0).";
+                return;
+            }
+
+            if (!marcadorOrigen) {
+                marcadorOrigen = new google.maps.Marker({ position: origen, map: map, label: "A" });
+            } else { marcadorOrigen.setPosition(origen); }
+
+            if (!marcadorDestino) {
+                marcadorDestino = new google.maps.Marker({ position: destino, map: map, label: "B" });
+            } else { marcadorDestino.setPosition(destino); }
+
+            // 🚗 SOLICITUD ESTRICTA DE RUTA POR CARRETERA (Sin líneas rectas de respaldo)
+            directionsService.route({
+                origin: origen,
+                destination: destino,
+                travelMode: google.maps.TravelMode.DRIVING,
+                provideRouteAlternatives: false
+            }, (response, status) => {
+                if (status === "OK") {
+                    banner.style.display = "none";
+                    directionsRenderer.setDirections(response);
+                } else {
+                    // Si Google falla, informamos el error exacto en vez de inventar una línea recta
+                    banner.style.display = "block";
+                    banner.innerText = "Error de Ruta Vial: " + status + ". Verifique que los puntos estén sobre vías transitables.";
+                    console.error("Directions failed due to " + status);
+                }
+            });
+        };
+
+        window.actualizarPosicionConductor = function(lat, lng) {
+            if (!map) return;
+            const pos = { lat: parseFloat(String(lat).replace(/,/g, '.')), lng: parseFloat(String(lng).replace(/,/g, '.')) };
+            if (!marcadorConductor) {
+                marcadorConductor = new google.maps.Marker({
+                    position: pos, map: map,
+                    icon: { path: google.maps.SymbolPath.CIRCLE, scale: 8, fillColor: "#007AFF", fillOpacity: 1, strokeColor: "white", strokeWeight: 2 },
+                    zIndex: 9999
+                });
+            } else {
+                marcadorConductor.setPosition(pos);
+            }
+        };
+    </script>
+</head>
+<body onload="initMap()">
+    <div id="error-banner"></div>
+    <div id="map"></div>
+</body>
+</html>
